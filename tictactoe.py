@@ -22,16 +22,6 @@ The game ends when one of the two players is able to allign their own marker on 
 it is impossible for any player to win
 '''
 
-pos1 = ""
-pos2 = ""
-pos3 = ""
-pos4 = ""
-pos5 = ""
-pos6 = ""
-pos7 = ""
-pos8 = ""
-pos9 = ""
-
 status = [" ", " ", " ", " ", " ", " ", " ", " ", " "]
 marks = ["X", "O"]
 
