@@ -40,7 +40,11 @@ while True:
     for n in [0, 1]:
         pos = int(input(f"Player {n+1}, enter a position from 1 to 9: ")) - 1
 
-    # Checks if grid position is already taken
+        # Checks if position is out of range
+        while pos < 0 or pos > 8:
+            pos = int(input("Error: invalid input, enter another position from 1 to 9: ")) - 1
+        
+        # Checks if grid position is already taken
         while status[pos] != " ":
             pos = int(input("Error: position already taken, enter another position from 1 to 9: ")) - 1
 
@@ -72,6 +76,3 @@ while True:
         if " " not in status:
             print("Game over. Nobody wins!")
             quit()
-        
-
-
