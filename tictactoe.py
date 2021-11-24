@@ -25,6 +25,7 @@ it is impossible for any player to win
 size = int(input("Enter the value of N for a NxN grid: "))
 status = [[" " for n in range(size)] for n in range(size)]
 
+# Defining winning conditions
 conditions = []
 for i in range(size):
     col = [n * size + i for n in range(size)]
@@ -39,6 +40,17 @@ conditions.append(diag1)
 diag2 = [n * (size - 1) for n in range(1, size + 1)]
 conditions.append(diag2)
 
+# Colors
+colors = {
+    "grid": "\033[97m", # Bright white
+    "pos": "\033[37m", # White 
+    "X": "\033[91m", # Bright red
+    "O": "\033[92m", # Bright green
+    " ": "\033[90m", # Gray
+    "end": "\033[0m"
+}
+
+# Marks for each player
 marks = ["X", "O"]
 
 # Print grid
@@ -54,6 +66,7 @@ marks = ["X", "O"]
 
 # Iterations
 # 1. NxN board
+# 2. Colored grids
 
 while True:
     for n in [0, 1]:
@@ -74,7 +87,7 @@ while True:
         for i in range(size):
             outputs = []
             for j in range(size):
-                outputs.append(f"|| {status[i][j]} ||")
+                outputs.append(f"{colors['grid']}||{colors['end']} {colors[status[i][j]]}{status[i][j]}{colors['end']} ||")
             print("   ".join(outputs))
 
         # Checks if somebody wins
