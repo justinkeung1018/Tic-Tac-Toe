@@ -22,7 +22,23 @@ The game ends when one of the two players is able to allign their own marker on 
 it is impossible for any player to win
 '''
 
-status = [" ", " ", " ", " ", " ", " ", " ", " ", " "]
+size = int(input("Enter the value of N for a NxN grid: "))
+status = [[" " for n in range(size)] for n in range(size)]
+
+conditions = []
+for i in range(size):
+    col = [n * size + i for n in range(size)]
+    conditions.append(col)
+
+for i in range(size):
+    row = [i * size + n for n in range(size)]
+    conditions.append(row)
+
+diag1 = [n * (size + 1) for n in range(size)]
+conditions.append(diag1)
+diag2 = [n * (size - 1) for n in range(1, size + 1)]
+conditions.append(diag2)
+
 marks = ["X", "O"]
 
 # Print grid
@@ -36,43 +52,43 @@ marks = ["X", "O"]
 # 1. Input is beyond 1 to 9
 # 2. Input is not an integer
 
+# Iterations
+# 1. NxN board
+
 while True:
     for n in [0, 1]:
-        pos = int(input(f"Player {n+1}, enter a position from 1 to 9: ")) - 1
+        pos = int(input(f"Player {n+1}, enter a position from 1 to {size ** 2}: ")) - 1
 
         # Checks if position is out of range
-        while pos < 0 or pos > 8:
-            pos = int(input("Error: invalid input, enter another position from 1 to 9: ")) - 1
+        while pos < 0 or pos > size ** 2 - 1:
+            pos = int(input(f"Error: invalid input, enter another position from 1 to {size ** 2}: ")) - 1
         
         # Checks if grid position is already taken
-        while status[pos] != " ":
-            pos = int(input("Error: position already taken, enter another position from 1 to 9: ")) - 1
+        while status[pos // size][pos % size] != " ":
+            pos = int(input(f"Error: position already taken, enter another position from 1 to {size ** 2}: ")) - 1
 
         # Places mark
-        status[pos] = marks[n]
+        status[pos // size][pos % size] = marks[n]
         
-        # Prints grid
-        print(f"|| {status[0]} ||   || {status[1]} ||   || {status[2]} ||\n|| {status[3]} ||   || {status[4]} ||   || {status[5]} ||\n|| {status[6]} ||   || {status[7]} ||   || {status[8]} ||")
+        # Prints NxN grid
+        for i in range(size):
+            outputs = []
+            for j in range(size):
+                outputs.append(f"|| {status[i][j]} ||")
+            print("   ".join(outputs))
 
         # Checks if somebody wins
-        player_marks = [i for i, x in enumerate(status) if x == marks[n]]
+        player_marks = []
+        for line in range(size):
+            line_marks = [i + line * size for i, x in enumerate(status[line]) if x == marks[n]]
+            player_marks += line_marks
 
-        col1 = [0, 3, 6]
-        col2 = [1, 4, 7]
-        col3 = [2, 5, 8]
-        row1 = [0, 1, 2]
-        row2 = [3, 4, 5]
-        row3 = [6, 7, 8]
-        diag_left = [0, 4, 8]
-        diag_right = [2, 4, 6]
-        game_ends = [col1, col2, col3, row1, row2, row3, diag_left, diag_right]
-        
-        for condition in game_ends:
+        for condition in conditions:
             if set(condition).issubset(player_marks):
-                print(f"Game over. Player {n+1} wins!")
+                print(f"Game over. Player {n + 1} wins!")
                 quit()
         
         # Nobody wins
-        if " " not in status:
+        if not any(" " in line for line in status):
             print("Game over. Nobody wins!")
             quit()
