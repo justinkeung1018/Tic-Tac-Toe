@@ -43,17 +43,31 @@ conditions.append(diag2)
 # Colors
 colors = {
     "grid": "\033[97m", # Bright white
-    "pos": "\033[37m", # White 
-    "X": "\033[91m", # Bright red
-    "O": "\033[92m", # Bright green
-    " ": "\033[90m", # Gray
+    "pos": "\033[90m", # White 
+    "X ": "\033[91m", # Bright red
+    "O ": "\033[92m", # Bright green
     "end": "\033[0m"
 }
 
 # Marks for each player
-marks = ["X", "O"]
+marks = ["X ", "O "]
 
-# Print grid
+# Prints grid
+def printGrid():
+    for row in range(size):
+        outputs = []
+        for col in range(size):
+            content = status[row][col]
+            if content == " ":
+                content = f"{row * size + col + 1}"
+                if int(content) < 10:
+                    content += " "
+                outputs.append(f"{colors['grid']}||{colors['end']} {colors['pos']}{content}{colors['end']} ||")
+            else:
+                outputs.append(f"{colors['grid']}||{colors['end']} {colors[content]}{content}{colors['end']} ||")
+        print("   ".join(outputs))
+
+printGrid()
 
 # 1. Check if grid position is already taken
 # 2. If not, place X or O
@@ -67,6 +81,7 @@ marks = ["X", "O"]
 # Iterations
 # 1. NxN board
 # 2. Colored grids
+# 3. Numbered grids
 
 while True:
     for n in [0, 1]:
@@ -84,11 +99,7 @@ while True:
         status[pos // size][pos % size] = marks[n]
         
         # Prints NxN grid
-        for i in range(size):
-            outputs = []
-            for j in range(size):
-                outputs.append(f"{colors['grid']}||{colors['end']} {colors[status[i][j]]}{status[i][j]}{colors['end']} ||")
-            print("   ".join(outputs))
+        printGrid()
 
         # Checks if somebody wins
         player_marks = []
